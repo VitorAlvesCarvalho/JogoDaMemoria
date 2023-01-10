@@ -2,11 +2,9 @@
   <button @click="toogleFlip" class="card">
     <div class="card__content" :class="{ card__flip: flip }">
       <div class="card__front">
-        <p>Frente</p>
+        <img width="80%" src="@/assets/icons/vue.svg" />
       </div>
-      <div class="card__back">
-        <p>Costa</p>
-      </div>
+      <div class="card__back"></div>
     </div>
   </button>
 </template>
@@ -17,7 +15,7 @@ export default {
 
   data() {
     return {
-      flip: false,
+      flip: true,
     };
   },
 
@@ -33,7 +31,7 @@ export default {
 .card {
   width: 100%;
   aspect-ratio: 3/4;
-  perspective: 3000px;
+  perspective: 1500px;
   appearance: none;
   border: none;
   background-color: transparent;
@@ -51,20 +49,24 @@ export default {
   &__back {
     width: 100%;
     height: 100%;
+    border-radius: 16px;
     overflow: hidden;
     position: absolute;
     left: 0;
     top: 0;
     backface-visibility: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   &__front {
-    background-color: red;
+    background-color: white;
   }
 
   &__back {
     transform: rotateY(180deg);
-    background-color: blue;
+    background-color: gray;
   }
 
   &__flip {
