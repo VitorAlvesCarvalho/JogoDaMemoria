@@ -1,5 +1,5 @@
 <template>
-  <button @click="toogleFlip" class="card">
+  <button @click="clickFlipCard" class="card">
     <div class="card__content" :class="{ card__flip: flip }">
       <div class="card__front">
         <img width="80%" :src="require(`@/assets/icons/${card.image}`)" />
@@ -10,6 +10,8 @@
 </template>
 
 <script>
+import { mapMutations, mapGetters } from "vuex";
+
 export default {
   name: "Card",
 
@@ -17,6 +19,12 @@ export default {
     card: {
       type: Object,
       required: true,
+    },
+
+    turndedCards: {
+      type: Array,
+      required: false,
+      default: () => [],
     },
   },
 
@@ -26,9 +34,33 @@ export default {
     };
   },
 
+  computed: {
+    ...mapGetters(["TURNED_CARDS_LIMIT"]),
+  },
+
   methods: {
+    ...mapMutations(["RESET_TURNED_CARDS"]),
+
+    clickFlipCard() {
+      if (this.card.flip || this.TURNED_CARDS_LIMIT) return;
+
+      this.$emit("flip-card", this.card);
+      this.toogleFlip();
+    },
+
     toogleFlip() {
       this.flip = !this.flip;
+    },
+  },
+
+  watch: {
+    turndedCards() {
+      if (this.TURNED_CARDS_LIMIT && this.card.flip) {
+        setTimeout(() => {
+          this.toogleFlip();
+          this.RESET_TURNED_CARDS();
+        }, 1000);
+      }
     },
   },
 };

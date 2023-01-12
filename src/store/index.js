@@ -5,17 +5,42 @@ import { cards } from "@/__mocks__/cards";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  state: {},
+  state: {
+    turnedCards: [],
+    cards,
+  },
 
   getters: {
-    CARDS() {
-      return cards;
+    CARDS(state) {
+      return state.cards;
+    },
+
+    TURNED_CARDS(state) {
+      return state.turnedCards;
+    },
+
+    TURNED_CARDS_LIMIT(state) {
+      return state.turnedCards.length === 2;
     },
   },
 
-  mutations: {},
+  mutations: {
+    SET_TURNED_CARDS(state, payload) {
+      state.turnedCards.push(payload);
+    },
 
-  actions: {},
+    RESET_TURNED_CARDS(state) {
+      state.turnedCards = [];
+      state.cards.map((item) => (item.flip = false));
+    },
+  },
 
-  modules: {},
+  actions: {
+    SET_FLIP_CARD({ state, commit }, payload) {
+      const card = state.cards.find((item) => item.id === payload.id);
+
+      card.flip = true;
+      commit("SET_TURNED_CARDS", payload);
+    },
+  },
 });

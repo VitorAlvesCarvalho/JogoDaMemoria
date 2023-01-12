@@ -3,13 +3,19 @@
     <h1 class="home__title">Jogo da memória</h1>
 
     <div class="home__list">
-      <Card v-for="card in CARDS" :key="card.id" :card="card" />
+      <Card
+        v-for="card in CARDS"
+        :key="card.id"
+        :card="card"
+        :turndedCards="TURNED_CARDS"
+        @flip-card="flipCard"
+      />
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import Card from "@/components/Card.vue";
 
 export default {
@@ -20,7 +26,15 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["CARDS"]),
+    ...mapGetters(["CARDS", "TURNED_CARDS"]),
+  },
+
+  methods: {
+    ...mapActions(["SET_FLIP_CARD"]),
+
+    flipCard(card) {
+      this.SET_FLIP_CARD(card);
+    },
   },
 };
 </script>
