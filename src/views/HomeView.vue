@@ -3,18 +3,24 @@
     <h1 class="home__title">Jogo da memória</h1>
 
     <div class="home__list">
-      <Card v-for="item in 12" :key="item" />
+      <Card v-for="card in CARDS" :key="card.id" :card="card" />
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import Card from "@/components/Card.vue";
+
 export default {
   name: "HomeView",
 
   components: {
     Card,
+  },
+
+  computed: {
+    ...mapGetters(["CARDS"]),
   },
 };
 </script>

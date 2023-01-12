@@ -2,7 +2,7 @@
   <button @click="toogleFlip" class="card">
     <div class="card__content" :class="{ card__flip: flip }">
       <div class="card__front">
-        <img width="80%" src="@/assets/icons/vue.svg" />
+        <img width="80%" :src="require(`@/assets/icons/${card.image}`)" />
       </div>
       <div class="card__back"></div>
     </div>
@@ -12,6 +12,13 @@
 <script>
 export default {
   name: "Card",
+
+  props: {
+    card: {
+      type: Object,
+      required: true,
+    },
+  },
 
   data() {
     return {
