@@ -11,6 +11,8 @@ const cardsSetPar = imagens.map((item, index) => {
   return {
     image: item,
     idPar: index,
+    flip: false,
+    foundPair: false,
   };
 });
 

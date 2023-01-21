@@ -1,5 +1,5 @@
 <template>
-  <button @click="clickFlipCard" class="card">
+  <button @click="clickFlipCard" class="card" :disabled="disableButton">
     <div class="card__content" :class="{ card__flip: flip }">
       <div class="card__front">
         <img width="80%" :src="require(`@/assets/icons/${card.image}`)" />
@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { mapMutations, mapGetters } from "vuex";
+import { mapMutations, mapGetters, mapActions } from "vuex";
 
 export default {
   name: "Card",
@@ -35,16 +35,19 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["TURNED_CARDS_LIMIT"]),
+    ...mapGetters(["TURNED_CARDS_LIMIT", "IS_PAIR"]),
+
+    disableButton() {
+      return this.card.flip || this.TURNED_CARDS_LIMIT || this.card.foundPair;
+    },
   },
 
   methods: {
     ...mapMutations(["RESET_TURNED_CARDS"]),
+    ...mapActions(["SET_FLIP_CARD", "CHECK_PAIR", "MARK_PAIRS"]),
 
     clickFlipCard() {
-      if (this.card.flip || this.TURNED_CARDS_LIMIT) return;
-
-      this.$emit("flip-card", this.card);
+      this.SET_FLIP_CARD(this.card);
       this.toogleFlip();
     },
 
@@ -56,10 +59,14 @@ export default {
   watch: {
     turndedCards() {
       if (this.TURNED_CARDS_LIMIT && this.card.flip) {
-        setTimeout(() => {
-          this.toogleFlip();
-          this.RESET_TURNED_CARDS();
-        }, 1000);
+        if (this.IS_PAIR) {
+          this.MARK_PAIRS();
+        } else {
+          setTimeout(() => {
+            this.toogleFlip();
+            this.RESET_TURNED_CARDS();
+          }, 1000);
+        }
       }
     },
   },
