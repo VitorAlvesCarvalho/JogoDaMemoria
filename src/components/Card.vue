@@ -41,12 +41,16 @@ export default {
   },
 
   methods: {
-    ...mapMutations(["RESET_TURNED_CARDS"]),
+    ...mapMutations(["RESET_TURNED_CARDS", "INCREMENT_ATTEMPTS"]),
     ...mapActions(["SET_FLIP_CARD", "CHECK_PAIR", "MARK_PAIRS"]),
 
     clickFlipCard() {
       this.toogleFlip();
       this.SET_FLIP_CARD(this.card);
+
+      if (this.TURNED_CARDS_LIMIT) {
+        this.INCREMENT_ATTEMPTS();
+      }
     },
 
     toogleFlip() {

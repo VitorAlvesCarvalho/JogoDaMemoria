@@ -8,6 +8,8 @@ export default new Vuex.Store({
   state: {
     turnedCards: [],
     cards,
+    attempts: 0,
+    hits: 0,
   },
 
   getters: {
@@ -26,6 +28,16 @@ export default new Vuex.Store({
     IS_PAIR(state) {
       return state.turnedCards[0].idPar === state.turnedCards[1].idPar;
     },
+
+    ATTEMPTS(state) {
+      return state.attempts;
+    },
+
+    HITS_PERCENTAGE(state) {
+      if (!state.hits) return 0;
+
+      return Math.trunc((state.hits / state.attempts) * 100);
+    },
   },
 
   mutations: {
@@ -36,6 +48,14 @@ export default new Vuex.Store({
     RESET_TURNED_CARDS(state) {
       state.turnedCards = [];
       state.cards.map((item) => (item.flip = false));
+    },
+
+    INCREMENT_ATTEMPTS(state) {
+      state.attempts += 1;
+    },
+
+    INCREMENT_HITS(state) {
+      state.hits += 1;
     },
   },
 
@@ -57,6 +77,7 @@ export default new Vuex.Store({
       });
 
       commit("RESET_TURNED_CARDS");
+      commit("INCREMENT_HITS");
     },
   },
 });

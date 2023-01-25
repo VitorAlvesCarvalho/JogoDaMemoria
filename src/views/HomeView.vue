@@ -2,6 +2,11 @@
   <div class="home">
     <h1 class="home__title">Jogo da memória</h1>
 
+    <div class="home__score">
+      <span>Tentativas: {{ ATTEMPTS }}</span>
+      <span>Taxa de acerto: {{ HITS_PERCENTAGE }} %</span>
+    </div>
+
     <div class="home__list">
       <Card
         v-for="card in CARDS"
@@ -25,7 +30,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["CARDS"]),
+    ...mapGetters(["CARDS", "ATTEMPTS", "HITS_PERCENTAGE"]),
   },
 
   methods: {
@@ -46,7 +51,13 @@ export default {
   color: white;
 
   &__title {
-    margin-bottom: 64px;
+    margin-bottom: 32px;
+  }
+
+  &__score {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 32px;
   }
 
   &__list {
