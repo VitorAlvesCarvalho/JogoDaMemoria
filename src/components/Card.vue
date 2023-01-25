@@ -8,7 +8,7 @@
       <div class="card__front">
         <img width="80%" :src="require(`@/assets/icons/${card.image}`)" />
       </div>
-      <div class="card__back"></div>
+      <div class="card__back" />
     </div>
   </button>
 </template>
@@ -123,7 +123,9 @@ export default {
 
   &__back {
     transform: rotateY(180deg);
-    background-color: gray;
+    background-image: url("../assets/fundo_carta.jpg");
+    background-size: 100%;
+    background-position: center;
   }
 
   &__flip {
