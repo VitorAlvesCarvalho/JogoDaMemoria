@@ -1,5 +1,9 @@
 <template>
-  <button @click="clickFlipCard" class="card" :disabled="disableButton">
+  <button
+    @click="clickFlipCard"
+    :class="['card', { 'card--found': card.foundPair }]"
+    :disabled="disableButton"
+  >
     <div class="card__content" :class="{ card__flip: flip }">
       <div class="card__front">
         <img width="80%" :src="require(`@/assets/icons/${card.image}`)" />
@@ -20,12 +24,6 @@ export default {
       type: Object,
       required: true,
     },
-
-    turndedCards: {
-      type: Array,
-      required: false,
-      default: () => [],
-    },
   },
 
   data() {
@@ -35,7 +33,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["TURNED_CARDS_LIMIT", "IS_PAIR"]),
+    ...mapGetters(["TURNED_CARDS_LIMIT", "IS_PAIR", "TURNED_CARDS"]),
 
     disableButton() {
       return this.card.flip || this.TURNED_CARDS_LIMIT || this.card.foundPair;
@@ -47,26 +45,34 @@ export default {
     ...mapActions(["SET_FLIP_CARD", "CHECK_PAIR", "MARK_PAIRS"]),
 
     clickFlipCard() {
-      this.SET_FLIP_CARD(this.card);
       this.toogleFlip();
+      this.SET_FLIP_CARD(this.card);
     },
 
     toogleFlip() {
       this.flip = !this.flip;
     },
+
+    markPair() {
+      this.MARK_PAIRS();
+    },
+
+    resetStateCardsFlip() {
+      setTimeout(() => {
+        this.toogleFlip();
+        this.RESET_TURNED_CARDS();
+      }, 1000);
+    },
   },
 
   watch: {
-    turndedCards() {
-      if (this.TURNED_CARDS_LIMIT && this.card.flip) {
-        if (this.IS_PAIR) {
-          this.MARK_PAIRS();
-        } else {
-          setTimeout(() => {
-            this.toogleFlip();
-            this.RESET_TURNED_CARDS();
-          }, 1000);
-        }
+    TURNED_CARDS() {
+      if (!this.TURNED_CARDS_LIMIT || !this.card.flip) return;
+
+      if (this.IS_PAIR) {
+        this.markPair();
+      } else {
+        this.resetStateCardsFlip();
       }
     },
   },
@@ -82,6 +88,11 @@ export default {
   border: none;
   background-color: transparent;
   padding: 0;
+  cursor: pointer;
+
+  &--found {
+    animation: animation-found 0.5s 0.8s forwards;
+  }
 
   &__content {
     position: relative;
@@ -117,6 +128,23 @@ export default {
 
   &__flip {
     transform: rotateY(180deg);
+  }
+}
+
+.card:disabled {
+  cursor: initial;
+}
+
+@keyframes animation-found {
+  0% {
+    transform: scale(1) rotate(0);
+  }
+  50% {
+    transform: scale(1.3) rotate(5deg);
+  }
+  100% {
+    transform: scale(1) rotate(0);
+    opacity: 0.5;
   }
 }
 </style>

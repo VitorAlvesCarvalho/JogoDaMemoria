@@ -7,7 +7,6 @@
         v-for="card in CARDS"
         :key="card.id"
         :card="card"
-        :turndedCards="TURNED_CARDS"
         @flip-card="flipCard"
       />
     </div>
@@ -26,7 +25,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["CARDS", "TURNED_CARDS"]),
+    ...mapGetters(["CARDS"]),
   },
 
   methods: {
