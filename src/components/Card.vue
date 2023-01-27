@@ -49,7 +49,9 @@ export default {
       this.SET_FLIP_CARD(this.card);
 
       if (this.TURNED_CARDS_LIMIT) {
-        this.INCREMENT_ATTEMPTS();
+        setTimeout(() => {
+          this.INCREMENT_ATTEMPTS();
+        }, 900);
       }
     },
 

@@ -77,7 +77,10 @@ export default new Vuex.Store({
       });
 
       commit("RESET_TURNED_CARDS");
-      commit("INCREMENT_HITS");
+
+      setTimeout(() => {
+        commit("INCREMENT_HITS");
+      }, 900);
     },
   },
 });
