@@ -38,6 +38,10 @@ export default new Vuex.Store({
 
       return Math.trunc((state.hits / state.attempts) * 100);
     },
+
+    FINISH_GAME(state) {
+      return state.cards.every((item) => item.foundPair);
+    },
   },
 
   mutations: {
