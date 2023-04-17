@@ -129,7 +129,7 @@ export default {
 
   &__back {
     transform: rotateY(180deg);
-    background-image: url("../assets/fundo_carta.jpg");
+    background-image: url("../assets/fundo-carta.jpg");
     background-size: 100%;
     background-position: center;
   }

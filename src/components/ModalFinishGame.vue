@@ -5,10 +5,7 @@
 
       <h3>Taxa de acertos: {{ HITS_PERCENTAGE }}%</h3>
 
-      <img
-        class="modal__image"
-        :src="require(`../assets/${memoryLevel.image}`)"
-      />
+      <img class="modal__image" src="../assets/finish-game.png" />
 
       <h3>Seu nível de memória é:</h3>
       <h2>{{ memoryLevel.text }}</h2>
@@ -30,22 +27,18 @@ export default {
         {
           text: "Excelente",
           min: 75,
-          image: "kitekat-4.png",
         },
         {
           text: "Bom",
           min: 50,
-          image: "kitekat-3.png",
         },
         {
           text: "Esquecido",
           min: 25,
-          image: "kitekat-2.png",
         },
         {
           text: "Amnésia",
           min: 0,
-          image: "kitekat-1.png",
         },
       ],
     };
@@ -86,7 +79,7 @@ export default {
 .modal {
   color: white;
   background-color: #242424;
-  padding: 64px;
+  padding: 32px 64px;
   border-radius: 18px;
   display: flex;
   align-items: center;
@@ -98,7 +91,8 @@ export default {
   }
 
   &__image {
-    margin: 16px;
+    margin: 32px 0;
+    width: 240px;
   }
 
   &__button {
