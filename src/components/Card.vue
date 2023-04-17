@@ -87,7 +87,7 @@ export default {
 
 <style lang="scss">
 .card {
-  width: 100%;
+  width: 120px;
   aspect-ratio: 3/4;
   perspective: 1500px;
   appearance: none;

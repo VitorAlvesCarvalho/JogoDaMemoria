@@ -67,25 +67,52 @@ export default {
 
 <style lang="scss">
 .home {
+  width: fit-content;
   margin: auto;
-  max-width: 40%;
   text-align: center;
   color: white;
 
   &__title {
+    font-size: 48px;
     margin-bottom: 32px;
   }
 
   &__score {
+    font-size: 24px;
     display: flex;
     justify-content: space-between;
+    flex-direction: column;
     margin-bottom: 32px;
   }
 
   &__list {
     display: grid;
     grid-gap: 30px;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(1, 1fr);
+
+    justify-items: center;
+  }
+
+  @media (min-width: 320px) {
+    &__list {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 460px) {
+    &__list {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    &__score {
+      flex-direction: row;
+    }
+  }
+
+  @media (min-width: 620px) {
+    &__list {
+      grid-template-columns: repeat(4, 1fr);
+    }
   }
 }
 </style>
