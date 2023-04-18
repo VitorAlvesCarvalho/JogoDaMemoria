@@ -18,7 +18,7 @@
       </div>
     </div>
 
-    <ModalFinishGame v-if="isOpenModalFinishGame" />
+    <ModalFinishGame v-if="isOpenModalFinishGame" @new-game="newGame" />
   </div>
 </template>
 
@@ -42,14 +42,45 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["CARDS", "ATTEMPTS", "HITS_PERCENTAGE", "FINISH_GAME"]),
+    ...mapGetters([
+      "CARDS",
+      "ATTEMPTS",
+      "HITS_PERCENTAGE",
+      "FINISH_GAME",
+      "IS_PAIR",
+      "TURNED_CARDS_LIMIT",
+    ]),
   },
 
   methods: {
-    ...mapActions(["SET_FLIP_CARD"]),
+    ...mapActions([
+      "SET_FLIP_CARD",
+      "MARK_PAIRS",
+      "RESET_TURNED_CARDS",
+      "RESET_GAME",
+    ]),
 
     flipCard(card) {
       this.SET_FLIP_CARD(card);
+
+      this.checkPair(card);
+    },
+
+    checkPair() {
+      if (!this.TURNED_CARDS_LIMIT) return;
+
+      if (this.IS_PAIR) {
+        this.MARK_PAIRS();
+      } else {
+        setTimeout(() => {
+          this.RESET_TURNED_CARDS();
+        }, 1000);
+      }
+    },
+
+    newGame() {
+      this.RESET_GAME();
+      this.isOpenModalFinishGame = false;
     },
   },
 

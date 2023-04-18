@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import { cards } from "@/__mocks__/cards";
+import { cards, shuffleArray } from "@/__mocks__/cards";
 
 Vue.use(Vuex);
 
@@ -15,10 +15,6 @@ export default new Vuex.Store({
   getters: {
     CARDS(state) {
       return state.cards;
-    },
-
-    TURNED_CARDS(state) {
-      return state.turnedCards;
     },
 
     TURNED_CARDS_LIMIT(state) {
@@ -51,7 +47,13 @@ export default new Vuex.Store({
 
     RESET_TURNED_CARDS(state) {
       state.turnedCards = [];
-      state.cards.map((item) => (item.flip = false));
+      state.cards.map((item) => {
+        if (!item.foundPair) {
+          item.flip = true;
+        }
+
+        return item;
+      });
     },
 
     INCREMENT_ATTEMPTS(state) {
@@ -67,7 +69,7 @@ export default new Vuex.Store({
     SET_FLIP_CARD({ state, commit }, payload) {
       const card = state.cards.find((item) => item.id === payload.id);
 
-      card.flip = true;
+      card.flip = false;
       commit("SET_TURNED_CARDS", payload);
     },
 
@@ -83,8 +85,27 @@ export default new Vuex.Store({
       commit("RESET_TURNED_CARDS");
 
       setTimeout(() => {
+        commit("INCREMENT_ATTEMPTS");
         commit("INCREMENT_HITS");
-      }, 900);
+      }, 800);
+    },
+
+    RESET_TURNED_CARDS({ commit }) {
+      commit("INCREMENT_ATTEMPTS");
+      commit("RESET_TURNED_CARDS");
+    },
+
+    RESET_GAME({ state }) {
+      state.turnedCards = [];
+      state.hits = 0;
+      state.attempts = 0;
+      state.cards = cards.map((item) => {
+        item.flip = true;
+        item.foundPair = false;
+
+        return item;
+      });
+      state.cards = shuffleArray(state.cards);
     },
   },
 });

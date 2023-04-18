@@ -4,7 +4,7 @@
     :class="['card', { 'card--found': card.foundPair }]"
     :disabled="disableButton"
   >
-    <div class="card__content" :class="{ card__flip: flip }">
+    <div class="card__content" :class="{ card__flip: card.flip }">
       <div class="card__front">
         <img width="80%" :src="require(`@/assets/icons/${card.image}`)" />
       </div>
@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { mapMutations, mapGetters, mapActions } from "vuex";
+import { mapGetters } from "vuex";
 
 export default {
   name: "Card",
@@ -26,60 +26,17 @@ export default {
     },
   },
 
-  data() {
-    return {
-      flip: true,
-    };
-  },
-
   computed: {
-    ...mapGetters(["TURNED_CARDS_LIMIT", "IS_PAIR", "TURNED_CARDS"]),
+    ...mapGetters(["TURNED_CARDS_LIMIT"]),
 
     disableButton() {
-      return this.card.flip || this.TURNED_CARDS_LIMIT || this.card.foundPair;
+      return !this.card.flip || this.TURNED_CARDS_LIMIT || this.card.foundPair;
     },
   },
 
   methods: {
-    ...mapMutations(["RESET_TURNED_CARDS", "INCREMENT_ATTEMPTS"]),
-    ...mapActions(["SET_FLIP_CARD", "CHECK_PAIR", "MARK_PAIRS"]),
-
     clickFlipCard() {
-      this.toogleFlip();
-      this.SET_FLIP_CARD(this.card);
-
-      if (this.TURNED_CARDS_LIMIT) {
-        setTimeout(() => {
-          this.INCREMENT_ATTEMPTS();
-        }, 900);
-      }
-    },
-
-    toogleFlip() {
-      this.flip = !this.flip;
-    },
-
-    markPair() {
-      this.MARK_PAIRS();
-    },
-
-    resetStateCardsFlip() {
-      setTimeout(() => {
-        this.toogleFlip();
-        this.RESET_TURNED_CARDS();
-      }, 1000);
-    },
-  },
-
-  watch: {
-    TURNED_CARDS() {
-      if (!this.TURNED_CARDS_LIMIT || !this.card.flip) return;
-
-      if (this.IS_PAIR) {
-        this.markPair();
-      } else {
-        this.resetStateCardsFlip();
-      }
+      this.$emit("flip-card", this.card);
     },
   },
 };

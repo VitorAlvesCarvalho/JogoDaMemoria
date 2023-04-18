@@ -11,7 +11,7 @@ const cardsSetPar = imagens.map((item, index) => {
   return {
     image: item,
     idPar: index,
-    flip: false,
+    flip: true,
     foundPair: false,
   };
 });
@@ -23,7 +23,7 @@ const cardsSetId = [...cardsSetPar, ...cardsSetPar].map((item, index) => {
   };
 });
 
-function shuffleArray(arr) {
+export function shuffleArray(arr) {
   for (let i = arr.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [arr[i], arr[j]] = [arr[j], arr[i]];

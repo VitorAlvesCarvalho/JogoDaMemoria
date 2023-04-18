@@ -56,7 +56,7 @@ export default {
 
   methods: {
     newGame() {
-      window.location.reload();
+      this.$emit("new-game");
     },
   },
 };
