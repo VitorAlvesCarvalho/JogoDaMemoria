@@ -12,6 +12,8 @@
 
       <h3>Seu nível de memória é:</h3>
       <h2>{{ memoryLevel.text }}</h2>
+
+      <button @click="newGame" class="modal__button">Novo jogo</button>
     </div>
   </div>
 </template>
@@ -21,16 +23,6 @@ import { mapGetters } from "vuex";
 
 export default {
   name: "HomeView",
-
-  computed: {
-    ...mapGetters(["HITS_PERCENTAGE"]),
-
-    memoryLevel() {
-      return this.memoryLevelCases.find(
-        (item) => item.min <= this.HITS_PERCENTAGE
-      );
-    },
-  },
 
   data() {
     return {
@@ -57,6 +49,22 @@ export default {
         },
       ],
     };
+  },
+
+  computed: {
+    ...mapGetters(["HITS_PERCENTAGE"]),
+
+    memoryLevel() {
+      return this.memoryLevelCases.find(
+        (item) => item.min <= this.HITS_PERCENTAGE
+      );
+    },
+  },
+
+  methods: {
+    newGame() {
+      window.location.reload();
+    },
   },
 };
 </script>
@@ -90,7 +98,18 @@ export default {
   }
 
   &__image {
-    margin: 12px;
+    margin: 16px;
+  }
+
+  &__button {
+    margin-top: 24px;
+    padding: 16px 72px;
+    border: none;
+    cursor: pointer;
+    border-radius: 16px;
+    color: white;
+    background-color: gray;
+    font-size: 18px;
   }
 }
 </style>

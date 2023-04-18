@@ -148,7 +148,7 @@ export default {
     transform: scale(1) rotate(0);
   }
   50% {
-    transform: scale(1.3) rotate(3deg);
+    transform: scale(1.1) rotate(3deg);
   }
   100% {
     transform: scale(1) rotate(0);
